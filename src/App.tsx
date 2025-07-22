@@ -1,35 +1,56 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { ThemeProvider } from '@emotion/react';
+import theme from './styles/theme';
+import GlobalStyle from './styles/GlobalStyle';
+
+import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom';
+
+import Home from './pages/Home.tsx';
+import Login from './pages/Login.tsx';
+import NotFound from './pages/NotFound.tsx';
+import My from './pages/My.tsx';
+import Order from './pages/Order.tsx';
+import Theme from './pages/Theme.tsx';
+
+import useUser from './hooks/useUser.ts';
+import type { ReactNode } from 'react';
+
+const ProtectedRoute = ({ children }: { children: ReactNode }) => {
+  const { getEmail } = useUser();
+
+  return getEmail() === null ? <Navigate to="/login" replace /> : children;
+};
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <ThemeProvider theme={theme}>
+      <GlobalStyle />
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/notfound" element={<NotFound />} />
+          <Route
+            path="/my"
+            element={
+              <ProtectedRoute>
+                <My />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/order"
+            element={
+              <ProtectedRoute>
+                <Order />
+              </ProtectedRoute>
+            }
+          />
+          <Route path="/theme" element={<Theme />} />
+          <Route path="*" element={<Navigate to="/notfound" replace />} />
+        </Routes>
+      </BrowserRouter>
+    </ThemeProvider>
+  );
 }
 
-export default App
+export default App;
