@@ -5,7 +5,7 @@ import useUser from '@/hooks/useUser';
 const FriendSelectorWrapper = styled.div`
   width: auto;
   height: auto;
-  padding: ${({ theme }) => theme.spacing.spacing4}
+  padding: ${({ theme }) => theme.spacing.spacing4};
     ${({ theme }) => theme.spacing.spacing3};
   background-color: ${({ theme }) => theme.colors.gray.gray200};
 `;
@@ -13,7 +13,7 @@ const FriendSelectorWrapper = styled.div`
 const FriendSelectorBox = styled.div`
   width: auto;
   height: auto;
-  padding: ${({ theme }) => theme.spacing.spacing4}
+  padding: ${({ theme }) => theme.spacing.spacing4};
     ${({ theme }) => theme.spacing.spacing4};
   background-color: ${({ theme }) => theme.colors.gray.gray00};
   border-radius: 16px;

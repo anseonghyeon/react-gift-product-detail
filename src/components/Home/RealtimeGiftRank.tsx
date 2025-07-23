@@ -6,7 +6,7 @@ import RealtimeRankItemWrapper from './RealtimeRankItemWrapper';
 const RealtimeRankWrapper = styled.div`
   width: auto;
   height: auto;
-  padding: ${({ theme }) => theme.spacing.spacing2}
+  padding: ${({ theme }) => theme.spacing.spacing2};
     ${({ theme }) => theme.spacing.spacing4};
 `;
 
@@ -20,7 +20,7 @@ const RealtimeRankTitle = styled.h2`
 const UserGroupSelectorWrapper = styled.div`
   width: auto;
   height: auto;
-  padding: ${({ theme }) => theme.spacing.spacing4}
+  padding: ${({ theme }) => theme.spacing.spacing4};
     ${({ theme }) => theme.spacing.spacing2};
 
   display: flex;
@@ -70,7 +70,7 @@ const UserGroupSelectorTxt = styled.p<{ isSelected?: boolean }>`
 const RankingTypeSelectorWrapper = styled.div`
   width: auto;
   height: auto;
-  padding: ${({ theme }) => theme.spacing.spacing3}
+  padding: ${({ theme }) => theme.spacing.spacing3};
     ${({ theme }) => theme.spacing.spacing4};
   border: 1px solid ${({ theme }) => theme.colors.blue.blue200};
   background-color: ${({ theme }) => theme.colors.blue.blue100};
@@ -90,23 +90,32 @@ const RankingTypeSelectorBtn = styled.div<{ isSelected?: boolean }>`
   cursor: pointer;
 `;
 
+const GROUP_ALL = 'ALL';
+const GROUP_FEMALE = 'FEMALE';
+const GROUP_MALE = 'MALE';
+const GROUP_TEEN = 'TEEN';
+
 const userGroupMock = [
-  { key: 0, group: 'ALL', emoji: 'ALL', label: '전체' },
-  { key: 1, group: 'FEMALE', emoji: '👩🏻', label: '여성이' },
-  { key: 2, group: 'MALE', emoji: '👨🏻', label: '남성이' },
-  { key: 3, group: 'TEEN', emoji: '👦🏻', label: '청소년이' },
+  { key: 0, group: GROUP_ALL, emoji: 'ALL', label: '전체' },
+  { key: 1, group: GROUP_FEMALE, emoji: '👩🏻', label: '여성이' },
+  { key: 2, group: GROUP_MALE, emoji: '👨🏻', label: '남성이' },
+  { key: 3, group: GROUP_TEEN, emoji: '👦🏻', label: '청소년이' },
 ];
 
+const TYPE_MANY_WISH = 'MANY_WISH';
+const TYPE_MANY_RECEIVE = 'MANY_RECEIVE';
+const TYPE_MANY_WISH_RECEIVE = 'MANY_WISH_RECEIVE';
+
 const rankingTypeMock = [
-  { key: 0, type: 'MANY_WISH', label: '받고 싶어한' },
-  { key: 1, type: 'MANY_RECEIVE', label: '많이 선물한' },
-  { key: 2, type: 'MANY_WISH_RECEIVE', label: '위시로 받은' },
+  { key: 0, type: TYPE_MANY_WISH, label: '받고 싶어한' },
+  { key: 1, type: TYPE_MANY_RECEIVE, label: '많이 선물한' },
+  { key: 2, type: TYPE_MANY_WISH_RECEIVE, label: '위시로 받은' },
 ];
 
 // 메인 컴포넌트 시작
 function RealtimeGiftRank() {
-  const [selectedGroup, setSelectedGroup] = useState('ALL');
-  const [selectedType, setSelectedType] = useState('MANY_WISH');
+  const [selectedGroup, setSelectedGroup] = useState(GROUP_ALL);
+  const [selectedType, setSelectedType] = useState(TYPE_MANY_WISH);
 
   // 최초 랜더링시 sessionStorage에서 선택된 그룹, 타입값을 가져와서 state에 세팅
   useEffect(() => {
