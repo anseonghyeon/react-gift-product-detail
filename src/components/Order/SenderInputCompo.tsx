@@ -39,7 +39,7 @@ const SenderInput = styled.input`
     color: ${({ theme }) => theme.colors.gray.gray600};
   }
 
-  padding: ${({ theme }) => theme.spacing.spacing2}
+  padding: ${({ theme }) => theme.spacing.spacing2};
     ${({ theme }) => theme.spacing.spacing3};
 `;
 
@@ -64,21 +64,21 @@ const SenderInputErrorTxt = styled.p`
   width: 95%;
 `;
 
+type OrderFormValues = {
+  selectedId: number;
+  message: string;
+  senderName: string;
+  receivers: Receiver[];
+  allPrice: number;
+};
+
+type Receiver = {
+  name: string;
+  phone: string;
+  count: number;
+};
+
 function SenderInputCompo() {
-  type OrderFormValues = {
-    selectedId: number;
-    message: string;
-    senderName: string;
-    receivers: Receiver[];
-    allPrice: number;
-  };
-
-  type Receiver = {
-    name: string;
-    phone: string;
-    count: number;
-  };
-
   const { register, formState } = useFormContext<OrderFormValues>();
   return (
     <SenderInputWrapper>

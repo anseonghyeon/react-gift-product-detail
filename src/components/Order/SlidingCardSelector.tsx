@@ -24,21 +24,21 @@ const SlidingCard = styled.img<{ isActive: boolean }>`
   cursor: pointer;
 `;
 
+type OrderFormValues = {
+  selectedId: number;
+  message: string;
+  senderName: string;
+  receivers: Receiver[];
+  allPrice: number;
+};
+
+type Receiver = {
+  name: string;
+  phone: string;
+  count: number;
+};
+
 function SlidingCardSelector() {
-  type OrderFormValues = {
-    selectedId: number;
-    message: string;
-    senderName: string;
-    receivers: Receiver[];
-    allPrice: number;
-  };
-
-  type Receiver = {
-    name: string;
-    phone: string;
-    count: number;
-  };
-
   const { setValue, clearErrors, watch } = useFormContext<OrderFormValues>();
 
   function handleCardClick(id: number) {

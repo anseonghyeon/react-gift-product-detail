@@ -3,7 +3,7 @@ import styled from '@emotion/styled';
 const ItemInfoWrapper = styled.div`
   width: auto;
   height: auto;
-  padding: ${({ theme }) => theme.spacing.spacing3}
+  padding: ${({ theme }) => theme.spacing.spacing3};
     ${({ theme }) => theme.spacing.spacing4};
 `;
 
@@ -17,7 +17,7 @@ const ItemInfoTitle = styled.h2`
 const ItemInfoBox = styled.div`
   width: auto;
   height: auto;
-  padding: ${({ theme }) => theme.spacing.spacing3}
+  padding: ${({ theme }) => theme.spacing.spacing3};
     ${({ theme }) => theme.spacing.spacing4};
   border: 1px solid ${({ theme }) => theme.colors.gray.gray300};
   border-radius: 7px;

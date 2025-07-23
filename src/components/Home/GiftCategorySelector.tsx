@@ -2,16 +2,15 @@ import styled from '@emotion/styled';
 import PromoBanner from './PromoBanner';
 
 import { useEffect, useState } from 'react';
-import axios from 'axios';
 
 import { api } from '../../utils/api';
 
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const GiftCategorySelectorStyle = styled.div`
   width: auto;
   height: auto;
-  padding: ${({ theme }) => theme.spacing.spacing8}
+  padding: ${({ theme }) => theme.spacing.spacing8};
     ${({ theme }) => theme.spacing.spacing4};
 `;
 
@@ -82,8 +81,14 @@ const GiftCategorySelectorItemText = styled.p`
   margin-top: ${({ theme }) => theme.spacing.spacing1};
 `;
 
+type Theme = {
+  themeId: number;
+  image: string;
+  name: string;
+};
+
 function GiftCategorySelectorItemBox() {
-  const [themes, setThemes] = useState([]);
+  const [themes, setThemes] = useState<Theme[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
 

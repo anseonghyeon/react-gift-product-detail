@@ -1,7 +1,7 @@
 import { Spinner } from '@/components/Spinner';
 import { useState, useEffect, useRef } from 'react';
 import { api, IsErrorStatus } from '../../utils/api';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import styled from '@emotion/styled';
 
 // Item 영역 시작
@@ -76,8 +76,21 @@ const RealtimeItemPriceTxt = styled.p`
   color: ${({ theme }) => theme.colors.gray.gray1000};
 `;
 
+type Item = {
+  id: number;
+  name: string;
+  imageURL: string;
+  brandInfo: {
+    name: string;
+  };
+  price: {
+    sellingPrice: number;
+    basicPrice: number;
+  };
+};
+
 function InfiniteScroll({ themeId }: { themeId: string }) {
-  const [infiItem, setInfiItem] = useState([]);
+  const [infiItem, setInfiItem] = useState<Item[]>([]);
   const [cursor, setCursor] = useState(0);
   const [hasMore, setHasMore] = useState(true);
   const loader = useRef(null);

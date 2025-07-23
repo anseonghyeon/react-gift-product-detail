@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 import { useFormContext } from 'react-hook-form';
 
 const ReceiverInputWrapper = styled.div`
-  padding: ${({ theme }) => theme.spacing.spacing3}
+  padding: ${({ theme }) => theme.spacing.spacing3};
     ${({ theme }) => theme.spacing.spacing4};
   padding-bottom: ${({ theme }) => theme.spacing.spacing4};
   border-bottom: ${({ theme }) => theme.spacing.spacing2} solid
@@ -26,7 +26,7 @@ const ReceiverInputTitle = styled.h2`
 const ReceiverInputAddBtn = styled.button`
   width: auto;
   height: auto;
-  padding: ${({ theme }) => theme.spacing.spacing2}
+  padding: ${({ theme }) => theme.spacing.spacing2};
     ${({ theme }) => theme.spacing.spacing4};
   font-size: ${({ theme }) => theme.typography.label.label1Regular.fontSize};
   font-weight: ${({ theme }) =>

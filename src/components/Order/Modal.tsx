@@ -19,7 +19,7 @@ const ModalOverlay = styled.div`
 const ModalContent = styled.div`
   width: 55%;
   height: 93%;
-  padding: ${({ theme }) => theme.spacing.spacing3}
+  padding: ${({ theme }) => theme.spacing.spacing3};
     ${({ theme }) => theme.spacing.spacing5};
   border-radius: 8px;
   background-color: ${({ theme }) => theme.colors.gray.gray00};
@@ -58,14 +58,14 @@ const ModalInfoAddBtn = styled.button`
   line-height: ${({ theme }) =>
     theme.typography.label.label2Regular.lineHeight};
 
-  padding: ${({ theme }) => theme.spacing.spacing2}
+  padding: ${({ theme }) => theme.spacing.spacing2};
     ${({ theme }) => theme.spacing.spacing4};
   border: none;
   border-radius: 8px;
 `;
 // 모달 리시버 box 시작
 const ModalReceiverInputBox = styled.div`
-  padding: ${({ theme }) => theme.spacing.spacing3}
+  padding: ${({ theme }) => theme.spacing.spacing3};
     ${({ theme }) => theme.spacing.spacing4};
   padding-bottom: ${({ theme }) => theme.spacing.spacing4};
   border-bottom: ${({ theme }) => theme.spacing.spacing1} solid
@@ -109,7 +109,7 @@ const ReceiverInputNameLabel = styled.label`
 const ReceiverInputName = styled.input`
   width: 85%;
   height: ${({ theme }) => theme.spacing.spacing8};
-  padding: ${({ theme }) => theme.spacing.spacing1}
+  padding: ${({ theme }) => theme.spacing.spacing1};
     ${({ theme }) => theme.spacing.spacing3};
 
   border-radius: 8px;
@@ -147,7 +147,7 @@ const ReceiverInputPhoneNumberLabel = styled.label`
 const ReceiverInputPhoneNumber = styled.input`
   width: 85%;
   height: ${({ theme }) => theme.spacing.spacing9};
-  padding: ${({ theme }) => theme.spacing.spacing1}
+  padding: ${({ theme }) => theme.spacing.spacing1};
     ${({ theme }) => theme.spacing.spacing3};
 
   border-radius: 8px;
@@ -185,7 +185,7 @@ const ReceiverItemNumInputLabel = styled.label`
 const ReceiverItemNumInput = styled.input`
   width: 85%;
   height: ${({ theme }) => theme.spacing.spacing9};
-  padding: ${({ theme }) => theme.spacing.spacing1}
+  padding: ${({ theme }) => theme.spacing.spacing1};
     ${({ theme }) => theme.spacing.spacing3};
 
   border-radius: 8px;

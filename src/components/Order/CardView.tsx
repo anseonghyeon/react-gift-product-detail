@@ -35,7 +35,7 @@ const CardViewTxt = styled.textarea`
     outline: none;
     border: 1px solid ${({ theme }) => theme.colors.gray.gray700};
   }
-  padding: ${({ theme }) => theme.spacing.spacing2}
+  padding: ${({ theme }) => theme.spacing.spacing2};
     ${({ theme }) => theme.spacing.spacing3};
 
   font-size: ${({ theme }) => theme.typography.body.body1Regular.fontSize};

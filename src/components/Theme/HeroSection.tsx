@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 import styled from '@emotion/styled';
 import { api, IsErrorStatus } from '../../utils/api';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import { Spinner } from '@/components/Spinner';
 
@@ -10,7 +10,7 @@ const HeroSectionWrapper = styled.div<{ backgroundColor: string }>`
   width: auto;
   height: 100px;
   background-color: ${({ backgroundColor }) => backgroundColor};
-  padding: ${({ theme }) => theme.spacing.spacing3}
+  padding: ${({ theme }) => theme.spacing.spacing3};
     ${({ theme }) => theme.spacing.spacing3};
 
   display: flex;
@@ -43,8 +43,20 @@ const HeroSectionDescription = styled.p`
     theme.typography.subtitle.subtitle1Regular.lineHeight};
 `;
 
+type Hero = {
+  name: string;
+  title: string;
+  description: string;
+  backgroundColor: string;
+};
+
 function HeroSection({ themeId }: { themeId: string }) {
-  const [hero, setHero] = useState();
+  const [hero, setHero] = useState<Hero>({
+    name: '',
+    title: '',
+    description: '',
+    backgroundColor: '',
+  });
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
 

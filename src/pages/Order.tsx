@@ -15,7 +15,7 @@ import ReceiverInputCompo from '@/components/Order/ReceiverInputCompo';
 import ItemInfoCompo from '@/components/Order/ItemInfoCompo';
 import Modal from '@/components/Order/Modal';
 
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
 import useUser from '@/hooks/useUser';
 
 import { api, IsErrorStatus } from '../utils/api';
@@ -109,13 +109,13 @@ function Order() {
   });
 
   const {
-    register,
+    // register,
     control,
     handleSubmit,
-    formState: { errors },
+    // formState: { errors },
     watch,
-    setValue,
-    clearErrors,
+    // setValue,
+    // clearErrors,
   } = methods;
 
   // useForm에서 가져온 control객체를 넘겨야 리액트 훅 폼과 연결됨
@@ -192,9 +192,12 @@ function Order() {
           },
         );
 
-        alert(
-          `주문이 완료되었습니다.\n상품명: ${name}\n구매 수량: ${totalCount}\n발신자 이름: ${watch('senderName')}\n메시지: ${watch('message')}`,
-        );
+        if(response) {
+          alert(
+            `주문이 완료되었습니다.\n상품명: ${name}\n구매 수량: ${totalCount}\n발신자 이름: ${watch('senderName')}\n메시지: ${watch('message')}`,
+          );
+        }
+        
         navigate('/');
       } catch (error: any) {
         IsErrorStatus(error, '입력값을 다시 확인해주세요', navigate);

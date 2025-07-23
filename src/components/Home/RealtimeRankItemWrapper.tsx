@@ -1,5 +1,4 @@
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import styled from '@emotion/styled';
 import { useEffect, useState } from 'react';
 
@@ -136,6 +135,20 @@ const ErrorMessageWrapper = styled.div`
 `;
 
 const ErrorMessage = styled.p``;
+
+type RankingItem = {
+  id: number;
+  brandInfo: {
+    name: string;
+  };
+  imageURL: string;
+  name: string;
+  price: {
+    sellingPrice: number;
+    basicPrice: number;
+  };
+};
+
 function RealtimeRankItemWrapper({
   selectedGroup,
   selectedType,
@@ -143,7 +156,7 @@ function RealtimeRankItemWrapper({
   selectedGroup: string;
   selectedType: string;
 }) {
-  const [ranking, setRanking] = useState([]);
+  const [ranking, setRanking] = useState<RankingItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
   const [isCollapsed, setIsCollapsed] = useState(false);
@@ -178,18 +191,10 @@ function RealtimeRankItemWrapper({
 
   // item클릭시 해당 item정보들을 url query로들고 Order페이지로 가는 핸들러
   const handleItemClick = (
-    brandInfo: any,
-    id: any,
-    imageURL: any,
-    name: any,
-    price: any,
+    id: number,
   ) => {
     const query = new URLSearchParams({
-      brandInfo: brandInfo.name,
       id: id.toString(),
-      imageURL,
-      name,
-      price: price.basicPrice,
     }).toString();
 
     navigate(`/order?${query}`);
@@ -219,11 +224,7 @@ function RealtimeRankItemWrapper({
             key={item.id}
             onClick={() =>
               handleItemClick(
-                item.brandInfo,
                 item.id,
-                item.imageURL,
-                item.name,
-                item.price,
               )
             }
           >
