@@ -3,6 +3,8 @@ import styled from '@emotion/styled';
 import { useEffect, useState } from 'react';
 
 import { api } from '../../utils/api';
+
+import { useQuery } from '@tanstack/react-query';
 // Item 영역 시작
 const RealtimeRankItemWrapperStyle = styled.div`
   width: 100%;
@@ -156,33 +158,9 @@ function RealtimeRankItemWrapper({
   selectedGroup: string;
   selectedType: string;
 }) {
-  const [ranking, setRanking] = useState<RankingItem[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [isError, setIsError] = useState(false);
   const [isCollapsed, setIsCollapsed] = useState(false);
 
   const navigate = useNavigate();
-
-  // 그룹과 타입state가 바뀔때마다 axios로 데이터 요청후 그에맞는 state 세팅
-  useEffect(() => {
-    const fetchRanking = async () => {
-      setIsLoading(true);
-      try {
-        const response = await api.get(
-          `/products/ranking?targetType=${selectedGroup}&rankType=${selectedType}`,
-        );
-        setRanking(response.data.data);
-        setIsError(false);
-      } catch (error) {
-        console.error('Error fetching ranking data:', error);
-        setIsError(true);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchRanking();
-  }, [selectedGroup, selectedType]);
 
   // 더보기버튼 클릭시 state를 반전해주는 핸들러
   const handleCollapsedClick = () => {
@@ -199,6 +177,18 @@ function RealtimeRankItemWrapper({
 
     navigate(`/order?${query}`);
   };
+  
+  const fetchRanking = async () => {
+    const response = await api.get(
+      `/products/ranking?targetType=${selectedGroup}&rankType=${selectedType}`,
+    );
+    return response.data.data;
+  };
+
+  const {data, error, isLoading } = useQuery<RankingItem[]>({
+    queryKey: ['rankingTimeItem', selectedGroup, selectedType],
+    queryFn: fetchRanking
+  });
 
   if (isLoading) {
     return (
@@ -208,7 +198,7 @@ function RealtimeRankItemWrapper({
     );
   }
 
-  if (isError || ranking.length === 0) {
+  if (error || data?.length === 0) {
     return (
       <ErrorMessageWrapper>
         <ErrorMessage>상품이 없습니다</ErrorMessage>
@@ -219,7 +209,7 @@ function RealtimeRankItemWrapper({
   return (
     <RealtimeRankItemWrapperStyle>
       <RealtimeRankItemGrid>
-        {(isCollapsed ? ranking : ranking.slice(0, 6)).map((item) => (
+        {(isCollapsed ? data : data?.slice(0, 6))?.map((item) => (
           <RealtimeRankItem
             key={item.id}
             onClick={() =>
