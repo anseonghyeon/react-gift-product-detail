@@ -1,10 +1,10 @@
-// import { Spinner } from '@/components/Spinner';
-import { useState, useEffect } from 'react';
 import styled from '@emotion/styled';
 import { api, IsErrorStatus } from '../../utils/api';
 import { useNavigate } from 'react-router-dom';
 
 import { Spinner } from '@/components/Spinner';
+
+import { useQuery } from '@tanstack/react-query';
 
 const HeroSectionWrapper = styled.div<{ backgroundColor: string }>`
   width: auto;
@@ -51,37 +51,33 @@ type Hero = {
 };
 
 function HeroSection({ themeId }: { themeId: string }) {
-  const [hero, setHero] = useState<Hero>({
-    name: '',
-    title: '',
-    description: '',
-    backgroundColor: '',
-  });
-  const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const fetchThemeHero = async () => {
-      try {
-        const response = await api.get(`/themes/${themeId}/info`);
+  const fetchThemeHero = async (): Promise<Hero> => {
+    const response = await api.get(`/themes/${themeId}/info`);
 
-        setHero(response.data.data);
-        setIsLoading(false);
-      } catch (error) {
-        IsErrorStatus(error, '', navigate);
-      } finally {
-      }
-    };
+    return response.data.data;
+  };
 
-    fetchThemeHero();
-  }, [themeId]);
+  const { data, error, isLoading } = useQuery<Hero>({
+    queryKey: ['hero',themeId],
+    queryFn: fetchThemeHero
+  });
 
   if (isLoading) return <Spinner />;
+
+  if (error) {
+    IsErrorStatus(error, '', navigate);
+    return null;
+  }
+
+  if (!data) return null;
+
   return (
-    <HeroSectionWrapper backgroundColor={hero.backgroundColor}>
-      <HeroSectionName>{hero.name}</HeroSectionName>
-      <HeroSectionTitle>{hero.title}</HeroSectionTitle>
-      <HeroSectionDescription>{hero.description}</HeroSectionDescription>
+    <HeroSectionWrapper backgroundColor={data.backgroundColor}>
+      <HeroSectionName>{data.name}</HeroSectionName>
+      <HeroSectionTitle>{data.title}</HeroSectionTitle>
+      <HeroSectionDescription>{data.description}</HeroSectionDescription>
     </HeroSectionWrapper>
   );
 }
