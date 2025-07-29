@@ -2,6 +2,6 @@ const QUERY_KEY = {
     THEME : 'theme',
     RTITEM : 'rankingTimeItem',
     RANKING : 'ranking',
-    PRODUCT : (productId : string) => ['product', productId] 
+    PBASIC: 'productBasic',
   }
   export default QUERY_KEY;
