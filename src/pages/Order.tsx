@@ -4,7 +4,7 @@ import Layout from '@/components/Layout';
 import styled from '@emotion/styled';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo} from 'react';
 
 import { FormProvider, useFieldArray, useForm } from 'react-hook-form';
 
@@ -19,6 +19,10 @@ import { ToastContainer } from 'react-toastify';
 import useUser from '@/hooks/useUser';
 
 import { api, IsErrorStatus } from '../utils/api';
+
+import { useQuery, useMutation} from '@tanstack/react-query';
+
+
 // 주문 버튼 시작
 const OrderBtnWrapper = styled.div`
   width: 100%;
@@ -64,6 +68,27 @@ const Spinner = styled.div`
   }
 `;
 
+type Receiver = {
+  name: string;
+  phone: string;
+  count: number;
+};
+
+type OrderFormValues = {
+  selectedId: number;
+  message: string;
+  senderName: string;
+  receivers: Receiver[];
+  allPrice: number;
+};
+
+type ProductSummary = {
+  brandName: string;
+  imageURL: string;
+  name: string;
+  price: number;
+};
+
 function Order() {
   const { getName, getAuthToken } = useUser(); // 운동하고와서 여기서 이름꺼네서 폼에넣자
   const userName = getName();
@@ -71,33 +96,13 @@ function Order() {
   const navigate = useNavigate();
   const [modalToggle, setModalToggle] = useState(false); // 모달의 상태를 나타내는 state
 
-  type Receiver = {
-    name: string;
-    phone: string;
-    count: number;
-  };
-  // 이 receiver객체들의 count를 다 합쳐서 쓸까?
-
-  type OrderFormValues = {
-    selectedId: number;
-    message: string;
-    senderName: string;
-    receivers: Receiver[];
-    allPrice: number;
-  };
-
   const DEFAULT_CARD_ID = 904;
   const defaultMessage = useMemo(() => {
     return (
       orderCard.find((c) => c.id === DEFAULT_CARD_ID)?.defaultTextMessage || ''
     );
   }, []);
-  // register는 필드를 useForm에 등록할때 사용
-  // control은 useFieldArray 랑 연결할때
-  // handleSubmit은 폼 제출 처리할때(최종 전송할때 감싸서 사용
-  // erros는 formState안에 있는 객체로 각 필드들의 에러 상태를 가지고있음
-  // watch는 특정 필드의 현재 값을 구독해서 상태를 실시간으로 확인 가능
-  // setValue 특정 필드의 값을 설정할때 사용
+  
   const methods = useForm<OrderFormValues>({
     defaultValues: {
       selectedId: DEFAULT_CARD_ID,
@@ -109,13 +114,9 @@ function Order() {
   });
 
   const {
-    // register,
     control,
     handleSubmit,
-    // formState: { errors },
     watch,
-    // setValue,
-    // clearErrors,
   } = methods;
 
   // useForm에서 가져온 control객체를 넘겨야 리액트 훅 폼과 연결됨
@@ -129,82 +130,75 @@ function Order() {
   const [searchParams] = useSearchParams();
   const id = searchParams.get('id');
 
-  const [brandName, setBrandName] = useState('');
-  const [imageURL, setImageURL] = useState('');
-  const [name, setItemName] = useState('');
-  const [price, setPrice] = useState(0);
+  const fetchRanking = async (): Promise<ProductSummary> => {
+    const response = await api.get(`/products/${id}/summary`);
 
-  const [isLoading, setIsLoading] = useState(true);
+    return response.data.data;
+  };
 
-  useEffect(() => {
-    const fetchRanking = async () => {
-      try {
-        const response = await api.get(`/products/${id}/summary`);
+  const {data, error, isLoading } = useQuery<ProductSummary>({
+    queryKey: ['ranking'],
+    queryFn: fetchRanking
+  });
 
-        setBrandName(response.data.data.brandName);
-        setImageURL(response.data.data.imageURL);
-        setItemName(response.data.data.name);
-        setPrice(response.data.data.price);
-
-        setIsLoading(false);
-      } catch (error: any) {
-        IsErrorStatus(
-          error,
-          '서버에 문제가 발생했습니다. 잠시 후 다시 시도해주세요',
-          navigate,
-        ) && navigate('/');
-      }
-    };
-
-    fetchRanking();
-  }, []);
+  if(error) {
+    IsErrorStatus(
+      error,
+      '서버에 문제가 발생했습니다. 잠시 후 다시 시도해주세요',
+      navigate,
+    ) && navigate('/');
+  }
 
   // getAuthToken
   // 최종 주문 핸들러
-  function handleOrderClick() {
-    const receivers = watch('receivers');
-    const totalCount = receivers.reduce(
-      (sum, receivers) => sum + Number(receivers.count || 0),
-      0,
-    );
-
-    const fetchSubmit = async () => {
-      try {
-        const receivers = watch('receivers').map((receiver) => ({
-          name: receiver.name,
-          phoneNumber: receiver.phone,
-          quantity: Number(receiver.count),
-        }));
-
-        const response = await api.post(
-          '/order',
-          {
-            productId: Number(id),
-            message: watch('message'),
-            messageCardId: String(watch('selectedId')),
-            ordererName: watch('senderName'),
-            receivers: receivers,
-          },
-          {
-            headers: {
-              Authorization: getAuthToken(),
-            },
-          },
-        );
-
-        if(response) {
-          alert(
-            `주문이 완료되었습니다.\n상품명: ${name}\n구매 수량: ${totalCount}\n발신자 이름: ${watch('senderName')}\n메시지: ${watch('message')}`,
-          );
-        }
-        
-        navigate('/');
-      } catch (error: any) {
-        IsErrorStatus(error, '입력값을 다시 확인해주세요', navigate);
+  const submitOrder = async () => {
+    const receivers = watch('receivers').map((receiver) => ({
+      name: receiver.name,
+      phoneNumber: receiver.phone,
+      quantity: Number(receiver.count),
+    }));
+  
+    const response = await api.post(
+      '/order',
+      {
+        productId: Number(id),
+        message: watch('message'),
+        messageCardId: String(watch('selectedId')),
+        ordererName: watch('senderName'),
+        receivers: receivers,
+      },
+      {
+        headers: {
+          Authorization: getAuthToken(),
+        },
       }
-    };
+    );
+  
+    return response.data;
+  };
 
-    fetchSubmit();
+  
+  const { mutate: mutateOrder} = useMutation({
+    mutationFn: submitOrder,
+    onSuccess: () => {
+      const receivers = watch('receivers');
+      const totalCount = receivers.reduce(
+        (sum, r) => sum + Number(r.count || 0),
+        0
+      );
+  
+      alert(
+        `주문이 완료되었습니다.\n상품명: ${data?.name}\n구매 수량: ${totalCount}\n발신자 이름: ${watch('senderName')}\n메시지: ${watch('message')}`
+      );
+      navigate('/');
+    },
+    onError: (error) => {
+      IsErrorStatus(error, '입력값을 다시 확인해주세요', navigate);
+    },
+  });
+  
+  function handleOrderClick() {
+    mutateOrder();
   }
 
   return (
@@ -224,10 +218,10 @@ function Order() {
           <ReceiverInputCompo setModalToggle={setModalToggle} fields={fields} />
           {/* 상품 정보 */}
           <ItemInfoCompo
-            brandName={brandName}
-            imageURL={imageURL}
-            name={name}
-            price={price}
+            brandName={data?.brandName}
+            imageURL={data?.imageURL}
+            name={data?.name}
+            price={data?.price}
           />
           {/* 주문 버튼 */}
           <OrderBtnWrapper>
@@ -242,7 +236,7 @@ function Order() {
             remove={remove}
             append={append}
             setModalToggle={setModalToggle}
-            price={price}
+            price={data?.price}
           />
         </FormProvider>
       )}
