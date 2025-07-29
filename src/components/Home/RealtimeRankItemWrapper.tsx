@@ -5,6 +5,8 @@ import { useState } from 'react';
 import { api } from '../../utils/api';
 
 import { useQuery } from '@tanstack/react-query';
+
+import QUERY_KEY from '@/constants/queryKeys';
 // Item 영역 시작
 const RealtimeRankItemWrapperStyle = styled.div`
   width: 100%;
@@ -186,7 +188,7 @@ function RealtimeRankItemWrapper({
   };
 
   const {data, error, isLoading } = useQuery<RankingItem[]>({
-    queryKey: ['rankingTimeItem', selectedGroup, selectedType],
+    queryKey: [QUERY_KEY.RTITEM, selectedGroup, selectedType],
     queryFn: fetchRanking
   });
 
