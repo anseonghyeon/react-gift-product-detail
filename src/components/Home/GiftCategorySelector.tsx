@@ -1,11 +1,11 @@
 import styled from '@emotion/styled';
 import PromoBanner from './PromoBanner';
 
-import { useEffect, useState } from 'react';
-
 import { api } from '../../utils/api';
 
 import { useNavigate } from 'react-router-dom';
+
+import { useQuery } from '@tanstack/react-query';
 
 const GiftCategorySelectorStyle = styled.div`
   width: auto;
@@ -88,37 +88,7 @@ type Theme = {
 };
 
 function GiftCategorySelectorItemBox() {
-  const [themes, setThemes] = useState<Theme[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [isError, setIsError] = useState(false);
-
   const navigate = useNavigate();
-
-  // 최초 랜더링시 axios로 api요청후 state 세팅
-  useEffect(() => {
-    const fetchThemes = async () => {
-      try {
-        const response = await api.get('/themes');
-        setThemes(response.data.data);
-      } catch (error) {
-        setIsError(true);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchThemes();
-  }, []);
-
-  // 로딩중일때 spinner 패인팅
-  if (isLoading) {
-    return <Spinner />;
-  }
-
-  // 에러뜨면 아무것도 표시 x
-  if (isError) {
-    return null;
-  }
 
   const handleThemeClick = (themeId: number) => {
     const query = new URLSearchParams({
@@ -128,9 +98,28 @@ function GiftCategorySelectorItemBox() {
     navigate(`/theme?${query}`);
   };
 
+  const fetchThemes = async (): Promise<Theme[]> => {
+    const response = await api.get('/themes');
+
+    return response.data.data;
+  }
+
+  const {data, error, isLoading } = useQuery<Theme[]>({
+    queryKey: ['theme'],
+    queryFn: fetchThemes
+  });
+
+  if(isLoading) {
+    return <Spinner />;
+  }
+
+  if(error) {
+    return null;
+  }
+
   return (
     <GiftCategorySelectorItemBoxGrid>
-      {themes.map((item) => (
+      {data?.map((item) => (
         <GiftCategorySelectorItemWrapper
           key={item.themeId}
           onClick={() => handleThemeClick(item.themeId)}

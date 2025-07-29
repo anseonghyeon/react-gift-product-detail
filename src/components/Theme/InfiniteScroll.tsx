@@ -1,8 +1,10 @@
 import { Spinner } from '@/components/Spinner';
-import { useState, useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { api, IsErrorStatus } from '../../utils/api';
 import { useNavigate } from 'react-router-dom';
 import styled from '@emotion/styled';
+
+import { useInfiniteQuery } from '@tanstack/react-query';
 
 // Item 영역 시작
 const RealtimeRankItemWrapperStyle = styled.div`
@@ -89,24 +91,43 @@ type Item = {
   };
 };
 
-function InfiniteScroll({ themeId }: { themeId: string }) {
-  const [infiItem, setInfiItem] = useState<Item[]>([]);
-  const [cursor, setCursor] = useState(0);
-  const [hasMore, setHasMore] = useState(true);
-  const loader = useRef(null);
+type ThemeProductResponse = {
+  list: Item[];
+  cursor: number;
+  hasMoreList: boolean;
+};
 
-  const [isLoading, setIsLoading] = useState(false);
-  const [isEmpty, setIsEmpty] = useState(false);
+
+function InfiniteScroll({ themeId }: { themeId: string }) {
+  const loader = useRef(null);
   const navigate = useNavigate();
+
+  const {
+    data,
+    error,
+    isLoading,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+  } = useInfiniteQuery<ThemeProductResponse, Error, ThemeProductResponse>({
+    queryKey: ['themeItems', themeId],
+    queryFn: async ({ pageParam = 0 }) => {
+      const response = await api.get(`/themes/${themeId}/products?cursor=${pageParam}&limit=20`);
+      return response.data.data;
+    },
+    initialPageParam: 0,
+    getNextPageParam: (lastPage) =>
+      lastPage.hasMoreList ? lastPage.cursor : undefined,
+  });
 
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting && !isLoading && hasMore) {
-          loadMore();
+        if (entry.isIntersecting && hasNextPage && !isFetchingNextPage) {
+          fetchNextPage();
         }
       },
-      { threshold: 1.0 },
+      { threshold: 1.0 }
     );
 
     const el = loader.current;
@@ -115,59 +136,35 @@ function InfiniteScroll({ themeId }: { themeId: string }) {
     return () => {
       if (el) observer.unobserve(el);
     };
-  }, [isLoading, hasMore]);
+  }, [fetchNextPage, hasNextPage, isFetchingNextPage]);
 
-  const loadMore = async () => {
-    if (!hasMore) return;
-    setIsLoading(true);
-    try {
-      const response = await api.get(
-        `/themes/${themeId}/products?cursor=${cursor}&limit=${20}`,
-      ); // limit은 한번에 불러올 아이템 갯수를 정하고 cursor는 인덱스임 그러니까 계속 불러올때마다 20씩 증가시켜줘야함
-      const { list, cursor: nextCursor, hasMoreList } = response.data.data;
-
-      setInfiItem((prev) => [...prev, ...list]);
-      setCursor(nextCursor);
-      setHasMore(hasMoreList);
-      if (response.data.data.list.length === 0) {
-        setIsEmpty(true);
-      }
-    } catch (error) {
-      IsErrorStatus(error, '', navigate);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  // item클릭시 해당 item정보들을 url query로들고 Order페이지로 가는 핸들러
   const handleItemClick = (id: number) => {
     const query = new URLSearchParams({ id: id.toString() }).toString();
-
     navigate(`/order?${query}`);
   };
 
-  if (isEmpty) return <h1>상품이 없습니다</h1>;
+  if (isLoading) return <Spinner />;
+  if (error) {
+    IsErrorStatus(error, '', navigate);
+    return null;
+  }
+
+  const allItems = (data as any)?.pages.flatMap((page:any) => page.list) || [];
+  if (!isLoading && allItems.length === 0) return <h1>상품이 없습니다</h1>;
+
   return (
     <RealtimeRankItemWrapperStyle>
       <RealtimeRankItemGrid>
-        {infiItem.map((item) => (
-          <RealtimeRankItem
-            key={item.id}
-            onClick={() => handleItemClick(item.id)}
-          >
-            <RealtimeItemImg
-              src={item.imageURL}
-              alt={item.name}
-            ></RealtimeItemImg>
+        {allItems.map((item:Item) => (
+          <RealtimeRankItem key={item.id} onClick={() => handleItemClick(item.id)}>
+            <RealtimeItemImg src={item.imageURL} alt={item.name} />
             <RealtimeItemTxt>{item.brandInfo.name}</RealtimeItemTxt>
             <RealtimeItemSubTxt>{item.brandInfo.name}</RealtimeItemSubTxt>
-            <RealtimeItemPriceTxt>
-              {item.price.sellingPrice} 원
-            </RealtimeItemPriceTxt>
+            <RealtimeItemPriceTxt>{item.price.sellingPrice} 원</RealtimeItemPriceTxt>
           </RealtimeRankItem>
         ))}
       </RealtimeRankItemGrid>
-      {isLoading && <Spinner />}
+      {isFetchingNextPage && <Spinner />}
       <div ref={loader} style={{ height: '20px' }} />
     </RealtimeRankItemWrapperStyle>
   );
