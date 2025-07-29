@@ -11,6 +11,8 @@ import { ToastContainer } from 'react-toastify';
 
 import { api, IsErrorStatus } from '../utils/api';
 
+import { useMutation } from '@tanstack/react-query';
+
 const LoginFormWrapper = styled.div`
   width: auto;
   height: 100vh;
@@ -113,8 +115,8 @@ function Login() {
   const password = useInput('password');
   const isFormValid = email.isValid && password.isValid;
 
-  const fetchLogin = async () => {
-    try {
+  const loginMutation = useMutation({
+    mutationFn: async () => {
       const response = await api.post(
         '/login',
         {
@@ -127,23 +129,25 @@ function Login() {
           },
         },
       );
-
-      setEmail(response.data.data.email);
-      setName(response.data.data.name);
-      setAuthToken(response.data.data.authToken);
-
+      return response.data.data;
+    },
+    onSuccess: (data) => {
+      setEmail(data.email);
+      setName(data.name);
+      setAuthToken(data.authToken);
       navigate(from, { replace: true });
-    } catch (error: any) {
+    },
+    onError: (error: any) => {
       IsErrorStatus(error, '@kakao.com 이메일 주소만 가능합니다', navigate);
-    }
-  };
+    },
+  });
 
   const handleLogin = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     if (!isFormValid) return;
 
-    fetchLogin();
-  };
+    loginMutation.mutate();
+  }; 
 
   return (
     <Layout>
