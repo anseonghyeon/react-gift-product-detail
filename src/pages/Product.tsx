@@ -11,6 +11,8 @@ import { useLocation } from "react-router-dom";
 import ErrorBoundary from "@/utils/ErrorBoundary";
 import ProductMain from "@/components/Product/ProductMain";
 
+import OrderBar from "@/components/Product/OrderBar";
+
 function Product() {
     const location = useLocation();
     const searchParams = new URLSearchParams(location.search);
@@ -18,12 +20,13 @@ function Product() {
 
     return (
         <Layout>
-            <NavBar></NavBar>
+            <NavBar/>
             <Suspense fallback={<Spinner />}>
                 <ErrorBoundary fallback={<p>에러 발생</p>}>
-                    <ProductBanner id={id}></ProductBanner>
+                    <ProductBanner id={id}/>
                 </ErrorBoundary>   
-                <ProductMain id={id}></ProductMain>
+                <ProductMain id={id}/>
+                <OrderBar id={id}/>
             </Suspense>
         </Layout>
     )

@@ -177,7 +177,7 @@ function RealtimeRankItemWrapper({
       id: id.toString(),
     }).toString();
 
-    navigate(`/order?${query}`);
+    navigate(`/product?${query}`);
   };
   
   const fetchRanking = async () => {

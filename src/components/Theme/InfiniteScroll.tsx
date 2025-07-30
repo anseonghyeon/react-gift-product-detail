@@ -138,10 +138,8 @@ function InfiniteScroll({ themeId }: { themeId: string }) {
     };
   }, [fetchNextPage, hasNextPage, isFetchingNextPage]);
 
-  // TODO: 이 코드 많이쓰임 여기 수정할꺼임
   const handleItemClick = (id: number) => {
     const query = new URLSearchParams({ id: id.toString() }).toString();
-    // navigate(`/order?${query}`);
     navigate(`/product?${query}`);
   };
 

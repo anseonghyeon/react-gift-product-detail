@@ -9,7 +9,7 @@ const ProductMainDescriptionWrapper = styled.div`
 
 const DescriptionTitle = styled.p`
     text-align: center;
-    margin-top: ${({ theme }) => theme.spacing.spacing3}
+    margin-top: ${({ theme }) => theme.spacing.spacing3};
 `
 
 const DescriptionImg = styled.img`
