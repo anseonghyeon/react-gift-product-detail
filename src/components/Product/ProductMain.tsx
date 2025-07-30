@@ -6,6 +6,8 @@ import ProductMainReview from "./ProductMainReview";
 
 import ErrorBoundary from "@/utils/ErrorBoundary";
 
+import ProductMainDetail from "./ProductMainDetail";
+
 const ProductMainWrapper = styled.div`
     width: auto;
 `
@@ -46,7 +48,9 @@ function ProductMain({ id }: { id: string | null }) {
             <ErrorBoundary fallback={<p>에러 발생</p>}>
                 {selected === 1 &&<ProductMainReview id={id}/>}
             </ErrorBoundary>
-            
+            <ErrorBoundary fallback={<p>에러 발생</p>}>
+                {selected === 2 &&<ProductMainDetail id={id}/>}
+            </ErrorBoundary>
             
         </ProductMainWrapper>
     );

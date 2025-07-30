@@ -3,5 +3,7 @@ const QUERY_KEY = {
     RTITEM : 'rankingTimeItem',
     RANKING : 'ranking',
     PBASIC: 'productBasic',
+    PREVIEW: 'productReview',
+    PDETAIL: 'productDetail',
   }
   export default QUERY_KEY;
