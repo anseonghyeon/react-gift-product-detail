@@ -7,6 +7,8 @@ import { useNavigate } from 'react-router-dom';
 
 import { useQuery } from '@tanstack/react-query';
 
+import QUERY_KEY from '@/constants/queryKeys';
+
 const GiftCategorySelectorStyle = styled.div`
   width: auto;
   height: auto;
@@ -105,7 +107,7 @@ function GiftCategorySelectorItemBox() {
   }
 
   const {data, error, isLoading } = useQuery<Theme[]>({
-    queryKey: ['theme'],
+    queryKey: [QUERY_KEY.THEME],
     queryFn: fetchThemes
   });
 

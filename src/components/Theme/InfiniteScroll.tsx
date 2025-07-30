@@ -140,7 +140,7 @@ function InfiniteScroll({ themeId }: { themeId: string }) {
 
   const handleItemClick = (id: number) => {
     const query = new URLSearchParams({ id: id.toString() }).toString();
-    navigate(`/order?${query}`);
+    navigate(`/product?${query}`);
   };
 
   if (isLoading) return <Spinner />;

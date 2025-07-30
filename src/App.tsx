@@ -10,6 +10,7 @@ import NotFound from './pages/NotFound.tsx';
 import My from './pages/My.tsx';
 import Order from './pages/Order.tsx';
 import Theme from './pages/Theme.tsx';
+import Product from './pages/Product.tsx';
 
 import useUser from './hooks/useUser.ts';
 import type { ReactNode } from 'react';
@@ -46,6 +47,9 @@ function App() {
             }
           />
           <Route path="/theme" element={<Theme />} />
+          <Route path='/product' element={<ProtectedRoute>
+                <Product />
+              </ProtectedRoute>} />
           <Route path="*" element={<Navigate to="/notfound" replace />} />
         </Routes>
       </BrowserRouter>

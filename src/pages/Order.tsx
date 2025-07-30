@@ -22,6 +22,7 @@ import { api, IsErrorStatus } from '../utils/api';
 
 import { useQuery, useMutation} from '@tanstack/react-query';
 
+import QUERY_KEY from '@/constants/queryKeys';
 
 // 주문 버튼 시작
 const OrderBtnWrapper = styled.div`
@@ -137,7 +138,7 @@ function Order() {
   };
 
   const {data, error, isLoading } = useQuery<ProductSummary>({
-    queryKey: ['ranking'],
+    queryKey: [QUERY_KEY.RANKING],
     queryFn: fetchRanking
   });
 
@@ -146,7 +147,7 @@ function Order() {
       error,
       '서버에 문제가 발생했습니다. 잠시 후 다시 시도해주세요',
       navigate,
-    ) && navigate('/');
+    ); 
   }
 
   // getAuthToken
