@@ -29,7 +29,7 @@ const ProductMainSelectorItem = styled.div<{selected:boolean}>`
     align-items: center;
 `
 function ProductMain({ id }: { id: string | null }) {
-    const [selected, setSelected] = useState(-1);
+    const [selected, setSelected] = useState(0);
 
     const handleSelectorClick = (n:number) => {
         setSelected(n);
@@ -43,7 +43,7 @@ function ProductMain({ id }: { id: string | null }) {
                 <ProductMainSelectorItem onClick={() => handleSelectorClick(2)} selected={selected === 2}>상세정보</ProductMainSelectorItem>
             </ProductMainSelector>
             <ErrorBoundary fallback={<p>에러 발생</p>}>
-                {selected === 0 &&<ProductMainDescription/>}
+                {selected === 0 &&<ProductMainDescription id={id}/>}
             </ErrorBoundary>
             <ErrorBoundary fallback={<p>에러 발생</p>}>
                 {selected === 1 &&<ProductMainReview id={id}/>}
