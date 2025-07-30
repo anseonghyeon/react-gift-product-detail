@@ -8,6 +8,8 @@ import { Suspense } from "react";
 
 import { useLocation } from "react-router-dom";
 
+import ErrorBoundary from "@/utils/ErrorBoundary";
+import ProductMain from "@/components/Product/ProductMain";
 
 function Product() {
     const location = useLocation();
@@ -18,9 +20,11 @@ function Product() {
         <Layout>
             <NavBar></NavBar>
             <Suspense fallback={<Spinner />}>
-                <ProductBanner id={id}></ProductBanner>
+                <ErrorBoundary fallback={<p>에러 발생</p>}>
+                    <ProductBanner id={id}></ProductBanner>
+                </ErrorBoundary>   
+                <ProductMain></ProductMain>
             </Suspense>
-            
         </Layout>
     )
 }
