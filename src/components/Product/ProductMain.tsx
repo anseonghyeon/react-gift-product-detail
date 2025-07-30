@@ -2,6 +2,9 @@ import styled from "@emotion/styled";
 import { useState } from "react";
 
 import ProductMainDescription from "./ProductMainDescription";
+import ProductMainReview from "./ProductMainReview";
+
+import ErrorBoundary from "@/utils/ErrorBoundary";
 
 const ProductMainWrapper = styled.div`
     width: auto;
@@ -23,7 +26,7 @@ const ProductMainSelectorItem = styled.div<{selected:boolean}>`
     justify-content: center;
     align-items: center;
 `
-function ProductMain() {
+function ProductMain({ id }: { id: string | null }) {
     const [selected, setSelected] = useState(-1);
 
     const handleSelectorClick = (n:number) => {
@@ -37,7 +40,14 @@ function ProductMain() {
                 <ProductMainSelectorItem onClick={() => handleSelectorClick(1)} selected={selected === 1}>선물후기</ProductMainSelectorItem>
                 <ProductMainSelectorItem onClick={() => handleSelectorClick(2)} selected={selected === 2}>상세정보</ProductMainSelectorItem>
             </ProductMainSelector>
-            {selected === 0 &&<ProductMainDescription></ProductMainDescription>}
+            <ErrorBoundary fallback={<p>에러 발생</p>}>
+                {selected === 0 &&<ProductMainDescription/>}
+            </ErrorBoundary>
+            <ErrorBoundary fallback={<p>에러 발생</p>}>
+                {selected === 1 &&<ProductMainReview id={id}/>}
+            </ErrorBoundary>
+            
+            
         </ProductMainWrapper>
     );
 }

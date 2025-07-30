@@ -23,7 +23,7 @@ function Product() {
                 <ErrorBoundary fallback={<p>에러 발생</p>}>
                     <ProductBanner id={id}></ProductBanner>
                 </ErrorBoundary>   
-                <ProductMain></ProductMain>
+                <ProductMain id={id}></ProductMain>
             </Suspense>
         </Layout>
     )

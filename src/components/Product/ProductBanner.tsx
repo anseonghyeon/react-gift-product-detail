@@ -79,8 +79,6 @@ function ProductBanner({ id }: { id: string | null }) {
         queryFn: fetchProductBasic
     });
 
-    // throw new Error('error');
-
     return (
         <ProductBannerWrapper>
             <ProductBannerImg src={data.imageURL} />
