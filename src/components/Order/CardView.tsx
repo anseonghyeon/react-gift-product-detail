@@ -81,9 +81,9 @@ function CardView() {
             ?.defaultTextMessage
         }
       ></CardViewImg>
-      <CardViewTxt {...register('message', { required: true })}></CardViewTxt>
+      <CardViewTxt {...register('message', { required: true })} data-testid='card-msg'></CardViewTxt>
       {formState.errors.message && (
-        <CardViewTxtErrorTxt>메시지를 입력 해주세요.</CardViewTxtErrorTxt>
+        <CardViewTxtErrorTxt data-testid='card-error-msg'>메시지를 입력 해주세요.</CardViewTxtErrorTxt>
       )}
     </CardViewWrapper>
   );

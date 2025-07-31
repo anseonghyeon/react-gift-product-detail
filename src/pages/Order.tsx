@@ -226,7 +226,7 @@ function Order() {
           />
           {/* 주문 버튼 */}
           <OrderBtnWrapper>
-            <OrderButton onClick={handleSubmit(handleOrderClick)}>
+            <OrderButton onClick={handleSubmit(handleOrderClick)} data-testid='order-btn'>
               {watch('allPrice')}원 주문하기
             </OrderButton>
           </OrderBtnWrapper>

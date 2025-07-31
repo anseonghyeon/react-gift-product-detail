@@ -86,9 +86,10 @@ function SenderInputCompo() {
       <SenderInput
         placeholder="이름을 입력하세요."
         {...register('senderName', { required: true })}
+        data-testid='sender-name'
       ></SenderInput>
       {formState.errors.senderName ? (
-        <SenderInputErrorTxt>이름을 입력해주세요.</SenderInputErrorTxt>
+        <SenderInputErrorTxt data-testid='sender-error-msg'>이름을 입력해주세요.</SenderInputErrorTxt>
       ) : (
         <SenderInputInfoTxt>
           * 실제 선물 발송 시 발신자이름으로 반영되는 정보입니다.
