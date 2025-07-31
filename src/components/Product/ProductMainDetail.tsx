@@ -46,7 +46,7 @@ function ProductMainDetail({ id }: { id: string | null }) {
     }
 
     const { data } = useQuery<ProductDetail>({
-        queryKey: [QUERY_KEY.PDETAIL],
+        queryKey: [QUERY_KEY.PDETAIL('productDetail')],
         queryFn: fetchProductDetail
     });
 

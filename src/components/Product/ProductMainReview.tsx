@@ -45,7 +45,7 @@ function ProductMainReview({ id }: { id: string | null }) {
     }
 
     const { data } = useQuery<ProductHighlightReview>({
-        queryKey: [QUERY_KEY.PREVIEW],
+        queryKey: [QUERY_KEY.PREVIEW('productReview')],
         queryFn: fetchProductBasic
     });
 

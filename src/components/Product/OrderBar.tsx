@@ -68,7 +68,7 @@ function OrderBar({ id }: { id: string | null }) {
     }
 
     const { data } = useQuery<ProductLikeInfo>({
-        queryKey: [QUERY_KEY.PLIKE],
+        queryKey: [QUERY_KEY.PLIKE('productLike')],
         queryFn: fetchProductLike,
         enabled: !!id,
     });
@@ -113,7 +113,7 @@ function OrderBar({ id }: { id: string | null }) {
         },
         // 요청 완료시 캐시 재검증 하는 부분
         onSettled: () => {
-            queryClient.invalidateQueries({ queryKey: [QUERY_KEY.PLIKE] });
+            queryClient.invalidateQueries({ queryKey: [QUERY_KEY.PLIKE('productLike')] });
         },
     });
 

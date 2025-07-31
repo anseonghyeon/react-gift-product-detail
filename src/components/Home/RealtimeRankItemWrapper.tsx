@@ -188,7 +188,7 @@ function RealtimeRankItemWrapper({
   };
 
   const {data, error, isLoading } = useQuery<RankingItem[]>({
-    queryKey: [QUERY_KEY.RTITEM, selectedGroup, selectedType],
+    queryKey: [QUERY_KEY.RTITEM(selectedGroup, selectedType)],
     queryFn: fetchRanking
   });
 

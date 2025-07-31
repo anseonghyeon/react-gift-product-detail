@@ -107,7 +107,7 @@ function GiftCategorySelectorItemBox() {
   }
 
   const {data, error, isLoading } = useQuery<Theme[]>({
-    queryKey: [QUERY_KEY.THEME],
+    queryKey: [QUERY_KEY.THEME('theme')],
     queryFn: fetchThemes
   });
 

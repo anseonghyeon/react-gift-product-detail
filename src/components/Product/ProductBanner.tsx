@@ -75,7 +75,7 @@ function ProductBanner({ id }: { id: string | null }) {
     }
 
     const { data } = useSuspenseQuery<ProductBasicInfo>({
-        queryKey: [QUERY_KEY.PBASIC],
+        queryKey: [QUERY_KEY.PBASIC('productBasic')],
         queryFn: fetchProductBasic
     });
 
