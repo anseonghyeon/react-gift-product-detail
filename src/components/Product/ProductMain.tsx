@@ -29,27 +29,27 @@ const ProductMainSelectorItem = styled.div<{selected:boolean}>`
     align-items: center;
 `
 function ProductMain({ id }: { id: string | null }) {
-    const [selected, setSelected] = useState(0);
+    const [selected, setSelected] = useState('PRODUCT_INFO');
 
-    const handleSelectorClick = (n:number) => {
-        setSelected(n);
+    const handleSelectorClick = (s:string) => {
+        setSelected(s);
     }
 
     return (
         <ProductMainWrapper>
             <ProductMainSelector>
-                <ProductMainSelectorItem onClick={() => handleSelectorClick(0)} selected={selected === 0}>상품설명</ProductMainSelectorItem>
-                <ProductMainSelectorItem onClick={() => handleSelectorClick(1)} selected={selected === 1}>선물후기</ProductMainSelectorItem>
-                <ProductMainSelectorItem onClick={() => handleSelectorClick(2)} selected={selected === 2}>상세정보</ProductMainSelectorItem>
+                <ProductMainSelectorItem onClick={() => handleSelectorClick('PRODUCT_INFO')} selected={selected === 'PRODUCT_INFO'}>상품설명</ProductMainSelectorItem>
+                <ProductMainSelectorItem onClick={() => handleSelectorClick('GIFT-REVIEW')} selected={selected === 'GIFT-REVIEW'}>선물후기</ProductMainSelectorItem>
+                <ProductMainSelectorItem onClick={() => handleSelectorClick('DETAIL-INFO')} selected={selected === 'DETAIL-INFO'}>상세정보</ProductMainSelectorItem>
             </ProductMainSelector>
             <ErrorBoundary fallback={<p>에러 발생</p>}>
-                {selected === 0 &&<ProductMainDescription id={id}/>}
+                {selected === 'PRODUCT_INFO' &&<ProductMainDescription id={id}/>}
             </ErrorBoundary>
             <ErrorBoundary fallback={<p>에러 발생</p>}>
-                {selected === 1 &&<ProductMainReview id={id}/>}
+                {selected === 'GIFT-REVIEW' &&<ProductMainReview id={id}/>}
             </ErrorBoundary>
             <ErrorBoundary fallback={<p>에러 발생</p>}>
-                {selected === 2 &&<ProductMainDetail id={id}/>}
+                {selected === 'DETAIL-INFO' &&<ProductMainDetail id={id}/>}
             </ErrorBoundary>
             
         </ProductMainWrapper>
