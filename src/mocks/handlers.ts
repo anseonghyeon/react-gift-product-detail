@@ -40,4 +40,25 @@ export const handlers = [
           },
         });
       }),
+    
+    // 실시간 상승 아이템 가져오는 핸들러
+    http.get('/products/ranking', () => {
+        const mockRanking = Array.from({ length: 20 }, (_, i) => ({
+          id: i + 1,
+          name: `상품 ${i + 1}`,
+          imageURL: `https://mock.com/image${i + 1}.jpg`,
+          price: {
+            basicPrice: 1000 * (i + 1),
+            sellingPrice: 1000 * (i + 1),
+            discountRate: i
+          },
+          brandInfo: {
+            id: i + 1,
+            name: `브랜드 ${i + 1}`,
+            imageURL: `https://mock.com/brandInfoimage${i + 1}.jpg`
+          },
+        }));
+    
+        return HttpResponse.json({ data: mockRanking });
+      }),
 ];

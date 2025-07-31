@@ -195,7 +195,7 @@ function RealtimeRankItemWrapper({
   if (isLoading) {
     return (
       <SpinnerWrapper>
-        <Spinner />
+        <Spinner data-testid="spinner"/>
       </SpinnerWrapper>
     );
   }
@@ -219,6 +219,7 @@ function RealtimeRankItemWrapper({
                 item.id,
               )
             }
+            data-testid="product-item"
           >
             <RealtimeItemImg
               src={item.imageURL}
