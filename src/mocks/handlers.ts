@@ -11,8 +11,8 @@ export const handlers = [
         return HttpResponse.json({
             data: {
                 brandName: 'MockBrand',
-                imageURL: 'https://mock.image/url.jpg',
-                name: `상품 이름 (${id})`,
+                imageURL: 'https://mock.image/mock.jpg',
+                name: `mock상품 (${id})`,
                 price: 12345,
             }
         });
@@ -25,4 +25,19 @@ export const handlers = [
             success: true,
         });
     }),
+
+    // 로그인 핸들러
+    http.post(`${testBaseURL}/login`, async ({ request }) => {
+        const { email } = await request.json() as { email: string};
+        if (!email.endsWith('@kakao.com')) {
+          return HttpResponse.json({ message: '@kakao.com 이메일 주소만 가능합니다' }, { status: 400 });
+        }
+        return HttpResponse.json({
+          data: {
+            email: 'mock@kakao.com',
+            name: '목목목',
+            authToken: 'mockToken123',
+          },
+        });
+      }),
 ];

@@ -10,10 +10,8 @@ import { ThemeProvider } from '@emotion/react';
 import theme from '@/styles/theme';
 import Order from '../Order';
 
-test('카드메세지에 메세지가 없이 주문하기 버튼을 누르면 에러 텍스트가 뜨는지 확인', async () => {
-    // Given 테스트의 초기 상태나 조건을 설정함
+const renderOrderPage = () => {
     const queryClient = new QueryClient();
-
     render(
         <MemoryRouter>
             <QueryClientProvider client={queryClient}>
@@ -23,6 +21,12 @@ test('카드메세지에 메세지가 없이 주문하기 버튼을 누르면 �
             </QueryClientProvider>
         </MemoryRouter>
     );
+};
+
+test('카드메세지에 메세지가 없이 주문하기 버튼을 누르면 에러 텍스트가 뜨는지 확인', async () => {
+    // Given 테스트의 초기 상태나 조건을 설정함
+    renderOrderPage();
+    
     const messageInput = await screen.findByTestId('card-msg');
     fireEvent.change(messageInput, { target: { value: ''}});
 
@@ -43,17 +47,8 @@ test('카드메세지에 메세지가 없이 주문하기 버튼을 누르면 �
 
 test('보내는 사람에 이름이 없이 주문하기 버튼을 누르면 에러 텍스트가 뜨는지 확인', async () => {
     // Given 테스트의 초기 상태나 조건을 설정함
-    const queryClient = new QueryClient();
+    renderOrderPage();
 
-    render(
-        <MemoryRouter>
-            <QueryClientProvider client={queryClient}>
-                <ThemeProvider theme={theme}>
-                    <Order />
-                </ThemeProvider>
-            </QueryClientProvider>
-        </MemoryRouter>
-    );
     const senderInput = await screen.findByTestId('sender-name');
     fireEvent.change(senderInput, { target: { value: ''}});
 
