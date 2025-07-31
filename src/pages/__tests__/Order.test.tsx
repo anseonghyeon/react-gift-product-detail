@@ -3,8 +3,8 @@
 // `render`: 컴포넌트를 가상 DOM에 렌더링하여 테스트할 수 있도록 하는 함수예요.
 // `screen`: 가상 DOM에서 요소를 찾기 위한 유틸리티를 제공하는 객체예요.
 // `fireEvent`: 사용자 이벤트를 시뮬레이션하는 함수예요.
-import { render, screen, fireEvent ,waitFor} from '@testing-library/react'
-import { MemoryRouter } from 'react-router-dom';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react'
+import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ThemeProvider } from '@emotion/react';
 import theme from '@/styles/theme';
@@ -13,10 +13,12 @@ import Order from '../Order';
 const renderOrderPage = () => {
     const queryClient = new QueryClient();
     render(
-        <MemoryRouter>
+        <MemoryRouter initialEntries={['/order?id=123']}>
             <QueryClientProvider client={queryClient}>
                 <ThemeProvider theme={theme}>
-                    <Order />
+                    <Routes>
+                        <Route path="/order" element={<Order />} />
+                    </Routes>
                 </ThemeProvider>
             </QueryClientProvider>
         </MemoryRouter>
@@ -26,9 +28,9 @@ const renderOrderPage = () => {
 test('카드메세지에 메세지가 없이 주문하기 버튼을 누르면 에러 텍스트가 뜨는지 확인', async () => {
     // Given 테스트의 초기 상태나 조건을 설정함
     renderOrderPage();
-    
+
     const messageInput = await screen.findByTestId('card-msg');
-    fireEvent.change(messageInput, { target: { value: ''}});
+    fireEvent.change(messageInput, { target: { value: '' } });
 
     const orderButton = await screen.findByTestId('order-btn');
     // When 테스트 대상이 되는 행동을 수행함
@@ -42,7 +44,7 @@ test('카드메세지에 메세지가 없이 주문하기 버튼을 누르면 �
 
     await waitFor(() => {
         expect(errorMsg).toBeInTheDocument();
-      });
+    });
 });
 
 test('보내는 사람에 이름이 없이 주문하기 버튼을 누르면 에러 텍스트가 뜨는지 확인', async () => {
@@ -50,7 +52,7 @@ test('보내는 사람에 이름이 없이 주문하기 버튼을 누르면 에�
     renderOrderPage();
 
     const senderInput = await screen.findByTestId('sender-name');
-    fireEvent.change(senderInput, { target: { value: ''}});
+    fireEvent.change(senderInput, { target: { value: '' } });
 
     const orderButton = await screen.findByTestId('order-btn');
     // When 테스트 대상이 되는 행동을 수행함
@@ -64,9 +66,11 @@ test('보내는 사람에 이름이 없이 주문하기 버튼을 누르면 에�
 
     await waitFor(() => {
         expect(errorMsg).toBeInTheDocument();
-      });
+    });
 });
 
 // 하나의 테스트 코드엔 하나의 시나리오만 테스트한다
 // describe으로 여러 테스트를 감쌀수도 있음
 // npm run test로 테스트 코드 실행함
+
+// 내상황이 컴포넌트별로 깔끔하게 분리되어있는 상황이 아니니 단위테스트보다 통합테스트를 택함

@@ -61,4 +61,16 @@ export const handlers = [
     
         return HttpResponse.json({ data: mockRanking });
       }),
+      
+      // 서머리 
+      http.get('/products/:id/summary', () => {
+    
+        return HttpResponse.json({ data: {
+            id: 123,
+            name: '목 케이크',
+            brandName: '목플레이스',
+            imageURL: 'https://example.com/image.jpg',
+            price: 20000,
+          }});
+      }),
 ];
