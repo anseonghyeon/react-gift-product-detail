@@ -36,7 +36,7 @@ const CardViewTxt = styled.textarea`
     border: 1px solid ${({ theme }) => theme.colors.gray.gray700};
   }
   padding: ${({ theme }) => theme.spacing.spacing2};
-    ${({ theme }) => theme.spacing.spacing3};
+  ${({ theme }) => theme.spacing.spacing3};
 
   font-size: ${({ theme }) => theme.typography.body.body1Regular.fontSize};
   font-weight: ${({ theme }) => theme.typography.body.body1Regular.fontWeight};
@@ -81,9 +81,14 @@ function CardView() {
             ?.defaultTextMessage
         }
       ></CardViewImg>
-      <CardViewTxt {...register('message', { required: true })} data-testid='card-msg'></CardViewTxt>
+      <CardViewTxt
+        {...register('message', { required: true })}
+        data-testid="card-msg"
+      ></CardViewTxt>
       {formState.errors.message && (
-        <CardViewTxtErrorTxt data-testid='card-error-msg'>메시지를 입력 해주세요.</CardViewTxtErrorTxt>
+        <CardViewTxtErrorTxt data-testid="card-error-msg">
+          메시지를 입력 해주세요.
+        </CardViewTxtErrorTxt>
       )}
     </CardViewWrapper>
   );

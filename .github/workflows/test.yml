@@ -2,11 +2,11 @@ name: Run Tests on PR or Merge to Main
 
 on:
   pull_request:
-    branches: 
-      - main 
+    branches:
+      - main
       - anseonghyeon
   push:
-    branches: 
+    branches:
       - main
       - anseonghyeon
 

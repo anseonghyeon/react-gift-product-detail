@@ -13,7 +13,7 @@ const GiftCategorySelectorStyle = styled.div`
   width: auto;
   height: auto;
   padding: ${({ theme }) => theme.spacing.spacing8};
-    ${({ theme }) => theme.spacing.spacing4};
+  ${({ theme }) => theme.spacing.spacing4};
 `;
 
 const GiftCategorySelectorTitle = styled.h2`
@@ -104,18 +104,18 @@ function GiftCategorySelectorItemBox() {
     const response = await api.get('/themes');
 
     return response.data.data;
-  }
+  };
 
-  const {data, error, isLoading } = useQuery<Theme[]>({
+  const { data, error, isLoading } = useQuery<Theme[]>({
     queryKey: [QUERY_KEY.THEME('theme')],
-    queryFn: fetchThemes
+    queryFn: fetchThemes,
   });
 
-  if(isLoading) {
+  if (isLoading) {
     return <Spinner />;
   }
 
-  if(error) {
+  if (error) {
     return null;
   }
 

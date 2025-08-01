@@ -6,5 +6,5 @@ const QUERY_KEY = {
   PREVIEW: (id: string | number) => ['productReview', id],
   PDETAIL: (id: string | number) => ['productDetail', id],
   PLIKE: (id: string | number) => ['productLike', id],
-}
+};
 export default QUERY_KEY;

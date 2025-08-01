@@ -47,9 +47,14 @@ function App() {
             }
           />
           <Route path="/theme" element={<Theme />} />
-          <Route path='/product' element={<ProtectedRoute>
+          <Route
+            path="/product"
+            element={
+              <ProtectedRoute>
                 <Product />
-              </ProtectedRoute>} />
+              </ProtectedRoute>
+            }
+          />
           <Route path="*" element={<Navigate to="/notfound" replace />} />
         </Routes>
       </BrowserRouter>

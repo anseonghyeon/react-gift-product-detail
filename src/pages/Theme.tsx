@@ -7,10 +7,10 @@ import HeroSection from '@/components/Theme/HeroSection';
 import InfiniteScroll from '@/components/Theme/InfiniteScroll';
 
 function Theme() {
-  const [searchParams] = useSearchParams(); // 얘는 여기있는게 맞아
+  const [searchParams] = useSearchParams();
   const themeId = searchParams.get('themeId');
 
-  if (!themeId) return <div>잘못된 접근입니다</div>; 
+  if (!themeId) return <div>잘못된 접근입니다</div>;
 
   return (
     <Layout>
