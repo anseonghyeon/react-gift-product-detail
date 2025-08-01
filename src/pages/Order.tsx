@@ -4,7 +4,7 @@ import Layout from '@/components/Layout';
 import styled from '@emotion/styled';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
-import { useState, useMemo} from 'react';
+import { useState, useMemo } from 'react';
 
 import { FormProvider, useFieldArray, useForm } from 'react-hook-form';
 
@@ -20,7 +20,7 @@ import useUser from '@/hooks/useUser';
 
 import { api, IsErrorStatus } from '../utils/api';
 
-import { useQuery, useMutation} from '@tanstack/react-query';
+import { useQuery, useMutation } from '@tanstack/react-query';
 
 import QUERY_KEY from '@/constants/queryKeys';
 
@@ -91,7 +91,7 @@ type ProductSummary = {
 };
 
 function Order() {
-  const { getName, getAuthToken } = useUser(); // 운동하고와서 여기서 이름꺼네서 폼에넣자
+  const { getName, getAuthToken } = useUser();
   const userName = getName();
 
   const navigate = useNavigate();
@@ -103,7 +103,7 @@ function Order() {
       orderCard.find((c) => c.id === DEFAULT_CARD_ID)?.defaultTextMessage || ''
     );
   }, []);
-  
+
   const methods = useForm<OrderFormValues>({
     defaultValues: {
       selectedId: DEFAULT_CARD_ID,
@@ -114,11 +114,7 @@ function Order() {
     },
   });
 
-  const {
-    control,
-    handleSubmit,
-    watch,
-  } = methods;
+  const { control, handleSubmit, watch } = methods;
 
   // useForm에서 가져온 control객체를 넘겨야 리액트 훅 폼과 연결됨
   // useForm의 defaultValues에 선언한 필드 이름과 맞춰줌
@@ -137,17 +133,17 @@ function Order() {
     return response.data.data;
   };
 
-  const {data, error, isLoading } = useQuery<ProductSummary>({
+  const { data, error, isLoading } = useQuery<ProductSummary>({
     queryKey: [QUERY_KEY.RANKING],
-    queryFn: fetchRanking
+    queryFn: fetchRanking,
   });
 
-  if(error) {
+  if (error) {
     IsErrorStatus(
       error,
       '서버에 문제가 발생했습니다. 잠시 후 다시 시도해주세요',
       navigate,
-    ); 
+    );
   }
 
   // getAuthToken
@@ -158,7 +154,7 @@ function Order() {
       phoneNumber: receiver.phone,
       quantity: Number(receiver.count),
     }));
-  
+
     const response = await api.post(
       '/order',
       {
@@ -172,24 +168,23 @@ function Order() {
         headers: {
           Authorization: getAuthToken(),
         },
-      }
+      },
     );
-  
+
     return response.data;
   };
 
-  
-  const { mutate: mutateOrder} = useMutation({
+  const { mutate: mutateOrder } = useMutation({
     mutationFn: submitOrder,
     onSuccess: () => {
       const receivers = watch('receivers');
       const totalCount = receivers.reduce(
         (sum, r) => sum + Number(r.count || 0),
-        0
+        0,
       );
-  
+
       alert(
-        `주문이 완료되었습니다.\n상품명: ${data?.name}\n구매 수량: ${totalCount}\n발신자 이름: ${watch('senderName')}\n메시지: ${watch('message')}`
+        `주문이 완료되었습니다.\n상품명: ${data?.name}\n구매 수량: ${totalCount}\n발신자 이름: ${watch('senderName')}\n메시지: ${watch('message')}`,
       );
       navigate('/');
     },
@@ -197,7 +192,7 @@ function Order() {
       IsErrorStatus(error, '입력값을 다시 확인해주세요', navigate);
     },
   });
-  
+
   function handleOrderClick() {
     mutateOrder();
   }
@@ -226,7 +221,10 @@ function Order() {
           />
           {/* 주문 버튼 */}
           <OrderBtnWrapper>
-            <OrderButton onClick={handleSubmit(handleOrderClick)}>
+            <OrderButton
+              onClick={handleSubmit(handleOrderClick)}
+              data-testid="order-btn"
+            >
               {watch('allPrice')}원 주문하기
             </OrderButton>
           </OrderBtnWrapper>

@@ -7,7 +7,7 @@ const RealtimeRankWrapper = styled.div`
   width: auto;
   height: auto;
   padding: ${({ theme }) => theme.spacing.spacing2};
-    ${({ theme }) => theme.spacing.spacing4};
+  ${({ theme }) => theme.spacing.spacing4};
 `;
 
 const RealtimeRankTitle = styled.h2`
@@ -21,7 +21,7 @@ const UserGroupSelectorWrapper = styled.div`
   width: auto;
   height: auto;
   padding: ${({ theme }) => theme.spacing.spacing4};
-    ${({ theme }) => theme.spacing.spacing2};
+  ${({ theme }) => theme.spacing.spacing2};
 
   display: flex;
   justify-content: space-between;
@@ -71,7 +71,7 @@ const RankingTypeSelectorWrapper = styled.div`
   width: auto;
   height: auto;
   padding: ${({ theme }) => theme.spacing.spacing3};
-    ${({ theme }) => theme.spacing.spacing4};
+  ${({ theme }) => theme.spacing.spacing4};
   border: 1px solid ${({ theme }) => theme.colors.blue.blue200};
   background-color: ${({ theme }) => theme.colors.blue.blue100};
   border-radius: 7px;

@@ -20,7 +20,7 @@ const ModalContent = styled.div`
   width: 55%;
   height: 93%;
   padding: ${({ theme }) => theme.spacing.spacing3};
-    ${({ theme }) => theme.spacing.spacing5};
+  ${({ theme }) => theme.spacing.spacing5};
   border-radius: 8px;
   background-color: ${({ theme }) => theme.colors.gray.gray00};
 
@@ -59,14 +59,14 @@ const ModalInfoAddBtn = styled.button`
     theme.typography.label.label2Regular.lineHeight};
 
   padding: ${({ theme }) => theme.spacing.spacing2};
-    ${({ theme }) => theme.spacing.spacing4};
+  ${({ theme }) => theme.spacing.spacing4};
   border: none;
   border-radius: 8px;
 `;
 // 모달 리시버 box 시작
 const ModalReceiverInputBox = styled.div`
   padding: ${({ theme }) => theme.spacing.spacing3};
-    ${({ theme }) => theme.spacing.spacing4};
+  ${({ theme }) => theme.spacing.spacing4};
   padding-bottom: ${({ theme }) => theme.spacing.spacing4};
   border-bottom: ${({ theme }) => theme.spacing.spacing1} solid
     ${({ theme }) => theme.colors.gray.gray200};
@@ -110,7 +110,7 @@ const ReceiverInputName = styled.input`
   width: 85%;
   height: ${({ theme }) => theme.spacing.spacing8};
   padding: ${({ theme }) => theme.spacing.spacing1};
-    ${({ theme }) => theme.spacing.spacing3};
+  ${({ theme }) => theme.spacing.spacing3};
 
   border-radius: 8px;
   border: 1px solid ${({ theme }) => theme.colors.gray.gray400};
@@ -148,7 +148,7 @@ const ReceiverInputPhoneNumber = styled.input`
   width: 85%;
   height: ${({ theme }) => theme.spacing.spacing9};
   padding: ${({ theme }) => theme.spacing.spacing1};
-    ${({ theme }) => theme.spacing.spacing3};
+  ${({ theme }) => theme.spacing.spacing3};
 
   border-radius: 8px;
   border: 1px solid ${({ theme }) => theme.colors.gray.gray400};
@@ -186,7 +186,7 @@ const ReceiverItemNumInput = styled.input`
   width: 85%;
   height: ${({ theme }) => theme.spacing.spacing9};
   padding: ${({ theme }) => theme.spacing.spacing1};
-    ${({ theme }) => theme.spacing.spacing3};
+  ${({ theme }) => theme.spacing.spacing3};
 
   border-radius: 8px;
   border: 1px solid ${({ theme }) => theme.colors.gray.gray400};

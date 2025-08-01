@@ -170,16 +170,14 @@ function RealtimeRankItemWrapper({
   };
 
   // item클릭시 해당 item정보들을 url query로들고 Order페이지로 가는 핸들러
-  const handleItemClick = (
-    id: number,
-  ) => {
+  const handleItemClick = (id: number) => {
     const query = new URLSearchParams({
       id: id.toString(),
     }).toString();
 
     navigate(`/product?${query}`);
   };
-  
+
   const fetchRanking = async () => {
     const response = await api.get(
       `/products/ranking?targetType=${selectedGroup}&rankType=${selectedType}`,
@@ -187,15 +185,15 @@ function RealtimeRankItemWrapper({
     return response.data.data;
   };
 
-  const {data, error, isLoading } = useQuery<RankingItem[]>({
-    queryKey: [QUERY_KEY.RTITEM, selectedGroup, selectedType],
-    queryFn: fetchRanking
+  const { data, error, isLoading } = useQuery<RankingItem[]>({
+    queryKey: [QUERY_KEY.RTITEM(selectedGroup, selectedType)],
+    queryFn: fetchRanking,
   });
 
   if (isLoading) {
     return (
       <SpinnerWrapper>
-        <Spinner />
+        <Spinner data-testid="spinner" />
       </SpinnerWrapper>
     );
   }
@@ -214,11 +212,8 @@ function RealtimeRankItemWrapper({
         {(isCollapsed ? data : data?.slice(0, 6))?.map((item) => (
           <RealtimeRankItem
             key={item.id}
-            onClick={() =>
-              handleItemClick(
-                item.id,
-              )
-            }
+            onClick={() => handleItemClick(item.id)}
+            data-testid="product-item"
           >
             <RealtimeItemImg
               src={item.imageURL}

@@ -11,7 +11,7 @@ const HeroSectionWrapper = styled.div<{ backgroundColor: string }>`
   height: 100px;
   background-color: ${({ backgroundColor }) => backgroundColor};
   padding: ${({ theme }) => theme.spacing.spacing3};
-    ${({ theme }) => theme.spacing.spacing3};
+  ${({ theme }) => theme.spacing.spacing3};
 
   display: flex;
   flex-direction: column;
@@ -60,8 +60,8 @@ function HeroSection({ themeId }: { themeId: string }) {
   };
 
   const { data, error, isLoading } = useQuery<Hero>({
-    queryKey: ['hero',themeId],
-    queryFn: fetchThemeHero
+    queryKey: ['hero', themeId],
+    queryFn: fetchThemeHero,
   });
 
   if (isLoading) return <Spinner />;

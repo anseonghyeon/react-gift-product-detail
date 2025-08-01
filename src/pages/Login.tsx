@@ -147,7 +147,7 @@ function Login() {
     if (!isFormValid) return;
 
     loginMutation.mutate();
-  }; 
+  };
 
   return (
     <Layout>

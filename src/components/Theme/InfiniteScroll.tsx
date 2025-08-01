@@ -97,7 +97,6 @@ type ThemeProductResponse = {
   hasMoreList: boolean;
 };
 
-
 function InfiniteScroll({ themeId }: { themeId: string }) {
   const loader = useRef(null);
   const navigate = useNavigate();
@@ -112,7 +111,9 @@ function InfiniteScroll({ themeId }: { themeId: string }) {
   } = useInfiniteQuery<ThemeProductResponse, Error, ThemeProductResponse>({
     queryKey: ['themeItems', themeId],
     queryFn: async ({ pageParam = 0 }) => {
-      const response = await api.get(`/themes/${themeId}/products?cursor=${pageParam}&limit=20`);
+      const response = await api.get(
+        `/themes/${themeId}/products?cursor=${pageParam}&limit=20`,
+      );
       return response.data.data;
     },
     initialPageParam: 0,
@@ -127,7 +128,7 @@ function InfiniteScroll({ themeId }: { themeId: string }) {
           fetchNextPage();
         }
       },
-      { threshold: 1.0 }
+      { threshold: 1.0 },
     );
 
     const el = loader.current;
@@ -149,18 +150,23 @@ function InfiniteScroll({ themeId }: { themeId: string }) {
     return null;
   }
 
-  const allItems = (data as any)?.pages.flatMap((page:any) => page.list) || [];
+  const allItems = (data as any)?.pages.flatMap((page: any) => page.list) || [];
   if (!isLoading && allItems.length === 0) return <h1>상품이 없습니다</h1>;
 
   return (
     <RealtimeRankItemWrapperStyle>
       <RealtimeRankItemGrid>
-        {allItems.map((item:Item) => (
-          <RealtimeRankItem key={item.id} onClick={() => handleItemClick(item.id)}>
+        {allItems.map((item: Item) => (
+          <RealtimeRankItem
+            key={item.id}
+            onClick={() => handleItemClick(item.id)}
+          >
             <RealtimeItemImg src={item.imageURL} alt={item.name} />
             <RealtimeItemTxt>{item.brandInfo.name}</RealtimeItemTxt>
             <RealtimeItemSubTxt>{item.brandInfo.name}</RealtimeItemSubTxt>
-            <RealtimeItemPriceTxt>{item.price.sellingPrice} 원</RealtimeItemPriceTxt>
+            <RealtimeItemPriceTxt>
+              {item.price.sellingPrice} 원
+            </RealtimeItemPriceTxt>
           </RealtimeRankItem>
         ))}
       </RealtimeRankItemGrid>

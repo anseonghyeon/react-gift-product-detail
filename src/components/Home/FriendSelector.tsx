@@ -6,7 +6,7 @@ const FriendSelectorWrapper = styled.div`
   width: auto;
   height: auto;
   padding: ${({ theme }) => theme.spacing.spacing4};
-    ${({ theme }) => theme.spacing.spacing3};
+  ${({ theme }) => theme.spacing.spacing3};
   background-color: ${({ theme }) => theme.colors.gray.gray200};
 `;
 
@@ -14,7 +14,7 @@ const FriendSelectorBox = styled.div`
   width: auto;
   height: auto;
   padding: ${({ theme }) => theme.spacing.spacing4};
-    ${({ theme }) => theme.spacing.spacing4};
+  ${({ theme }) => theme.spacing.spacing4};
   background-color: ${({ theme }) => theme.colors.gray.gray00};
   border-radius: 16px;
   cursor: pointer;
@@ -43,7 +43,7 @@ const FriendSelectorTxt = styled.p`
 `;
 
 function FriendSelector() {
-  const { getName } = useUser(); // TODO: useUser훅을 useUserInfo훅으로 리팩터링한후 아이디를 받아오는 과정에 대해 다시 생각해보자
+  const { getName } = useUser();
   const userName = getName(); // useName을 받아와서 친구 선택 박스에 출력함
 
   return (
